@@ -7,36 +7,39 @@ from application_layer.interfaces.employee_service_interface import IEmployeeSer
 from presentation_layer.table_printer import Printer
 from api.requester import Requester
 from datetime import datetime
+from application_layer.builders.employee_builder import EmployeeBuilder
 
 class EmployeeCliController:
-    def __init__(self, employee_service: IEmployeeService, education_cli_controller: EducationCliController, experience_cli_controller: ExperienceCliController):
+    def __init__(self, employee_service: IEmployeeService, education_cli_controller: EducationCliController, experience_cli_controller: ExperienceCliController, employee_builder: EmployeeBuilder):
         self.validator = InputValidator()
         self.education_cli_controller = education_cli_controller
         self.experience_cli_controller = experience_cli_controller
         self.printer = Printer()
         self.employee_service = employee_service
         self.requester = Requester()
+        self.employee_builder = employee_builder
     
 
     def add_an_employee(self):
-        _name = self.validator.get_input_and_validate(str, "Enter name: ")
-        _date_of_birth = self.validator.get_input_and_validate(str, "Enter date of birth (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
-        _nid = self.validator.get_input_and_validate(int, "Enter NID no: ", self.validator.validate_nid, "⚠️  NID should be between 10 and 17 digits")
-        _email = self.validator.get_input_and_validate(str, "Enter email address: ", self.validator.validate_email, "⚠️  Invalid email format")
-        _phone_no = self.validator.get_input_and_validate(str, "Enter phone no: ", self.validator.validate_phone_number, "⚠️  Phone no. should be 11 digits")
-        _gender = self.validator.get_input_and_validate(str, "Enter gender (Male/Female/Other): ", self.validator.validate_gender, "⚠️  Invalid gender input")
-        _father_name = self.validator.get_input_and_validate(str, "Enter father's name: ")
-        _mother_name = self.validator.get_input_and_validate(str, "Enter mother's name: ")
-        _marital_status = self.validator.get_input_and_validate(str, "Enter marital status (Single/Married): ")
-        _dept = self.validator.get_input_and_validate(str, "Enter department name: ")
-        _designation = self.validator.get_input_and_validate(str, "Enter designation: ")
-        _nationality = self.validator.get_input_and_validate(str, "Enter nationality: ")
-        _joining_date = self.validator.get_input_and_validate(str, "Enter joining date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
-        _present_address = self.validator.get_input_and_validate(str, "Enter present address: ")
-        _permanent_address = self.validator.get_input_and_validate(str, "Enter permanent address: ")
+        self.employee_builder.add_name(self.validator.get_input_and_validate(str, "Enter name: "))
+        self.employee_builder.add_date_of_birth(self.validator.get_input_and_validate(str, "Enter date of birth (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format"))
+        self.employee_builder.add_nid(self.validator.get_input_and_validate(int, "Enter NID no: ", self.validator.validate_nid, "⚠️  NID should be between 10 and 17 digits"))
+        self.employee_builder.add_email(self.validator.get_input_and_validate(str, "Enter email address: ", self.validator.validate_email, "⚠️  Invalid email format"))
+        self.employee_builder.add_phone_no(self.validator.get_input_and_validate(str, "Enter phone no: ", self.validator.validate_phone_number, "⚠️  Phone no. should be 11 digits"))
+        self.employee_builder.add_gender(self.validator.get_input_and_validate(str, "Enter gender (Male/Female/Other): ", self.validator.validate_gender, "⚠️  Invalid gender input"))
+        self.employee_builder.add_father_name(self.validator.get_input_and_validate(str, "Enter father's name: "))
+        self.employee_builder.add_mother_name(self.validator.get_input_and_validate(str, "Enter mother's name: "))
+        self.employee_builder.add_marital_status(self.validator.get_input_and_validate(str, "Enter marital status (Single/Married): "))
+        self.employee_builder.add_dept(self.validator.get_input_and_validate(str, "Enter department name: "))
+        self.employee_builder.add_designation(self.validator.get_input_and_validate(str, "Enter designation: "))
+        self.employee_builder.add_nationality(self.validator.get_input_and_validate(str, "Enter nationality: "))
+        self.employee_builder.add_joining_date(self.validator.get_input_and_validate(str, "Enter joining date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format"))
+        self.employee_builder.add_present_address(self.validator.get_input_and_validate(str, "Enter present address: "))
+        self.employee_builder.add_permanent_address(self.validator.get_input_and_validate(str, "Enter permanent address: "))
 
-        employee = Employee(None, _name, _date_of_birth, _nid, _email, _phone_no, _gender, _father_name, _mother_name, _marital_status, _dept, _designation, _nationality, _joining_date, _present_address, _permanent_address)
-        
+        # employee = Employee(None, _name, _date_of_birth, _nid, _email, _phone_no, _gender, _father_name, _mother_name, _marital_status, _dept, _designation, _nationality, _joining_date, _present_address, _permanent_address)
+        employee = self.employee_builder.build()
+
         # Send to employee service to add employee
         # _employee_id = self.employee_service.add_employee(employee)
         response = self.requester.request("POST", "/api/employees", employee)

@@ -16,6 +16,7 @@ from database_layer.storage_managers.education_db_manager import EducationDBMana
 from database_layer.storage_managers.experience_db_manager import ExperienceDBManager
 from application_layer.factories.service_factory import ServiceFactory
 from application_layer.factories.service_abstract_factory import ConcreteServiceFactory
+from application_layer.builders.employee_builder import EmployeeBuilder
 
 load_dotenv()
 
@@ -29,10 +30,13 @@ config = {
 
 def main(employee_service: IEmployeeService, education_service: IEducationService, experience_service: IExperienceService):
 
+    # Builders 
+    employee_builder = EmployeeBuilder()
+
     # Cli Controller objects
     education_cli_controller = EducationCliController(education_service)
     experience_cli_controller = ExperienceCliController(experience_service)
-    employee_cli_controller = EmployeeCliController(employee_service, education_cli_controller, experience_cli_controller)
+    employee_cli_controller = EmployeeCliController(employee_service, education_cli_controller, experience_cli_controller, employee_builder)
 
     # Start the CLI
     cli = CLI(employee_cli_controller, education_cli_controller, experience_cli_controller)
