@@ -14,6 +14,8 @@ from application_layer.interfaces.experience_service_interface import IExperienc
 from database_layer.storage_managers.employee_db_manager import EmployeeDBManager
 from database_layer.storage_managers.education_db_manager import EducationDBManager
 from database_layer.storage_managers.experience_db_manager import ExperienceDBManager
+from application_layer.factory.service_factory import ServiceFactory
+from application_layer.factory.service_abstract_factory import DatabaseServiceFactory
 
 load_dotenv()
 
@@ -45,14 +47,35 @@ if __name__ == "__main__":
         print(f"Database initialization failed: {e}")
         exit(1)
 
+    ''' BEFORE CREATIONAL PATTERNS '''
     # Database Managers
-    employee_db_manager = EmployeeDBManager(db_manager)
-    education_db_manager = EducationDBManager(db_manager)
-    experience_db_manager = ExperienceDBManager(db_manager)
+    # employee_db_manager = EmployeeDBManager(db_manager)
+    # education_db_manager = EducationDBManager(db_manager)
+    # experience_db_manager = ExperienceDBManager(db_manager)
 
     # Services objects
-    employee_service = EmployeeService(employee_db_manager)
-    education_service = EducationService(education_db_manager)
-    experience_service = ExperienceService(experience_db_manager)
+    # employee_service = EmployeeService(employee_db_manager)
+    # education_service = EducationService(education_db_manager)
+    # experience_service = ExperienceService(experience_db_manager)
+
+    ''' AFTER CREATIONAL PATTERNS '''
+
+    ''' USING ONLY FACTORY '''
+    # Factory
+    # service_factory = ServiceFactory()
+
+    # Service Objects
+    # employee_service = service_factory.create_employee_service(db_manager)
+    # education_service = service_factory.create_education_service(db_manager)
+    # experience_service = service_factory.create_experience_service(db_manager)
+
+    ''' USING ONLY ABSTRACT FACTORY '''    
+    # Abstract Factory
+    service_factory = DatabaseServiceFactory(db_manager)
+
+    # Service objects
+    employee_service = service_factory.create_employee_service()
+    education_service = service_factory.create_education_service()
+    experience_service = service_factory.create_experience_service()
 
     main(employee_service, education_service, experience_service)
