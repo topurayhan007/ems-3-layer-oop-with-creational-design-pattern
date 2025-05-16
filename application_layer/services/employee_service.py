@@ -1,7 +1,6 @@
 # Bridge between CLI controllers and DB managers
 from application_layer.classes.employee import Employee
 from application_layer.interfaces.repository_interface import IRepository
-from database_layer.storage_managers.employee_db_manager import EmployeeDBManager
 from application_layer.interfaces.employee_service_interface import IEmployeeService
 
 class EmployeeService(IEmployeeService):

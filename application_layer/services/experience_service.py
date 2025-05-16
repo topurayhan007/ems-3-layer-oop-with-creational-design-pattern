@@ -1,6 +1,5 @@
 from application_layer.classes.experience import Experience
 from application_layer.interfaces.repository_interface import IRepository
-from database_layer.storage_managers.experience_db_manager import ExperienceDBManager
 from application_layer.interfaces.experience_service_interface import IExperienceService
 
 class ExperienceService(IExperienceService):

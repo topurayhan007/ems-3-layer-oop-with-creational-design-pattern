@@ -1,6 +1,5 @@
 from application_layer.classes.education import EducationalDegree
 from application_layer.interfaces.repository_interface import IRepository
-from database_layer.storage_managers.education_db_manager import EducationDBManager
 from application_layer.interfaces.education_service_interface import IEducationService
 
 class EducationService(IEducationService):
