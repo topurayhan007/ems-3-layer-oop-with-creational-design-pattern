@@ -21,7 +21,7 @@ class ServiceAbstractFactory(ABC):
     def create_experience_service(self) -> IExperienceService:
         pass
 
-class DatabaseServiceFactory(ServiceAbstractFactory):
+class ConcreteServiceFactory(ServiceAbstractFactory):
     def __init__(self, db_manager: IDatabaseManager):
         self.db_manager = db_manager
     

@@ -14,8 +14,8 @@ from application_layer.interfaces.experience_service_interface import IExperienc
 from database_layer.storage_managers.employee_db_manager import EmployeeDBManager
 from database_layer.storage_managers.education_db_manager import EducationDBManager
 from database_layer.storage_managers.experience_db_manager import ExperienceDBManager
-from application_layer.factory.service_factory import ServiceFactory
-from application_layer.factory.service_abstract_factory import DatabaseServiceFactory
+from application_layer.factories.service_factory import ServiceFactory
+from application_layer.factories.service_abstract_factory import ConcreteServiceFactory
 
 load_dotenv()
 
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     ''' USING ONLY ABSTRACT FACTORY '''    
     # Abstract Factory
-    service_factory = DatabaseServiceFactory(db_manager)
+    service_factory = ConcreteServiceFactory(db_manager)
 
     # Service objects
     employee_service = service_factory.create_employee_service()
